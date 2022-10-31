@@ -37,6 +37,18 @@ suite("Unit Tests", () => {
     });
 
     test("Logic handles a puzzle string that is not 81 characters in length", () => {
+      let badPuzzle = puzzlesAndSolutions[0][0].slice(2);
+      assert.deepEqual(
+        solver.validate(badPuzzle),
+        { error: "Expected puzzle to be 81 characters long" },
+        "Should return error for puzzle string with too few characters"
+      );
+      badPuzzle = puzzlesAndSolutions[1][0] + "..9";
+      assert.deepEqual(
+        solver.validate(badPuzzle),
+        { error: "Expected puzzle to be 81 characters long" },
+        "Should return error for puzzle string with too many characters"
+      );
     });
   });
 
