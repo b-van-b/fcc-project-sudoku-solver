@@ -48,7 +48,27 @@ class SudokuSolver {
     return { valid: true };
   }
 
-  checkRegionPlacement(puzzleString, row, column, value) {}
+  checkRegionPlacement(puzzleString, row, column, value) {
+    // reject value out of range (1-9)
+    if (value < 1 || value > 9) return { error: "Invalid value" };
+    // get coords and return if error
+    const coords = this.getCoords(row, column);
+    if (coords.error) return coords;
+    const [foundRow, foundColumn] = coords;
+    const startR = Math.floor(foundRow / 3) * 3;
+    const startC = Math.floor(foundColumn / 3) * 3;
+    // get grid and return if error
+    const grid = this.loadString(puzzleString);
+    for (let r = startR; r < startR + 3; r++) {
+      for (let c = startC; c < startC + 3; c++) {
+        if (grid[r][c] == value) {
+          return { valid: false, conflict: "region" };
+        }
+      }
+    }
+    // return true if no conflicts found
+    return { valid: true };
+  }
 
   solve(puzzleString) {}
 
