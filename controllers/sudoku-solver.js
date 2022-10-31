@@ -20,6 +20,26 @@ class SudokuSolver {
   checkRegionPlacement(puzzleString, row, column, value) {}
 
   solve(puzzleString) {}
+
+  loadString(puzzleString) {
+    // return error on invalid puzzleString
+    const validation = this.validate(puzzleString);
+    if (validation.error) return validation;
+    // else, load it into an array
+    // load grid row by row
+    const grid = [];
+    for (let i = 0; i < 9; i++) {
+      const row = puzzleString
+        .slice(i * 9, i * 9 + 9)
+        .split("")
+        .map((char) => {
+          return char == "." ? 0 : +char;
+        });
+      grid.push(row);
+    }
+    // return grid
+    return grid;
+  }
 }
 
 module.exports = SudokuSolver;
