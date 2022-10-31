@@ -77,10 +77,24 @@ suite("Unit Tests", () => {
 
   suite("#checkColPlacement(puzzleString, row, column, value)", () => {
     test("Logic handles a valid column placement", () => {
-      
+      const result = solver.checkColPlacement(
+        testPuzzle.string,
+        testPuzzle.row,
+        testPuzzle.col,
+        testPuzzle.goodValue
+      );
+      assert.deepEqual(result, { valid: true });
     });
 
-    test("Logic handles an invalid column placement", () => {});
+    test("Logic handles an invalid column placement", () => {
+      const result = solver.checkColPlacement(
+        testPuzzle.string,
+        testPuzzle.row,
+        testPuzzle.col,
+        testPuzzle.badValue
+      );
+      assert.deepEqual(result, { valid: false, conflict: "column" });
+    });
   });
 
   suite("#checkRegionPlacement(puzzleString, row, column, value)", () => {
