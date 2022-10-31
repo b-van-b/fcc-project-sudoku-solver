@@ -1,4 +1,7 @@
+const rowLetters = "ABCDEFGHI";
+
 class SudokuSolver {
+
   validate(puzzleString) {
     // returns an object
     // check for string length
@@ -39,6 +42,19 @@ class SudokuSolver {
     }
     // return grid
     return grid;
+  }
+
+  getCoords(rowString, column) {
+    // get user-input coordinates, validate and return internal coords
+    const err = { error: "Invalid coordinate" };
+    // reject rowString if not exactly one character
+    if (rowString.length != 1) return err;
+    // read row
+    const row = rowLetters.indexOf(rowString);
+    // if out of bounds, return error
+    if (row < 0 || row > 8 || column < 1 || column > 9) return err;
+    // else, return coordinates
+    return [row, column - 1];
   }
 }
 
