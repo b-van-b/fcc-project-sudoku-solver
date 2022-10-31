@@ -120,10 +120,50 @@ suite("Unit Tests", () => {
   });
 
   suite("#solve(puzzleString)", () => {
-    test("Valid puzzle strings pass the solver", () => {});
+    test("Valid puzzle strings pass the solver", () => {
+      puzzlesAndSolutions.forEach(([puzzle, solution]) => {
+        assert.property(
+          solver.solve(puzzle),
+          "success",
+          "Should return success for a valid puzzle string"
+        );
+      });
+    });
 
-    test("Invalid puzzle strings fail the solver", () => {});
+    test("Invalid puzzle strings fail the solver", () => {
+      // invalid characters
+      let badPuzzle = puzzlesAndSolutions[0][0].split("");
+      badPuzzle[Math.floor(Math.random() * 81)] = "$";
+      badPuzzle = badPuzzle.join("");
+      assert.deepEqual(
+        solver.solve(badPuzzle),
+        { error: "Invalid characters in puzzle" },
+        "Should return error for puzzle string with invalid characters"
+      );
+      // too short
+      badPuzzle = puzzlesAndSolutions[0][0].slice(2);
+      assert.deepEqual(
+        solver.solve(badPuzzle),
+        { error: "Expected puzzle to be 81 characters long" },
+        "Should return error for puzzle string with too few characters"
+      );
+      // too long
+      badPuzzle = puzzlesAndSolutions[1][0] + "..9";
+      assert.deepEqual(
+        solver.solve(badPuzzle),
+        { error: "Expected puzzle to be 81 characters long" },
+        "Should return error for puzzle string with too many characters"
+      );
+    });
 
-    test("Solver returns the expected solution for an incomplete puzzle", () => {});
+    test("Solver returns the expected solution for an incomplete puzzle", () => {
+      puzzlesAndSolutions.forEach(([puzzle, solution]) => {
+        assert.deepEqual(
+          solver.solve(puzzle),
+          { success: solution },
+          "Should return proper solution for a valid puzzle string"
+        );
+      });
+    });
   });
 });
