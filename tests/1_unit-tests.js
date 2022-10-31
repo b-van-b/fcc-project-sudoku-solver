@@ -26,6 +26,14 @@ suite("Unit Tests", () => {
     });
 
     test("Logic handles a puzzle string with invalid characters (not 1-9 or .)", () => {
+      let badPuzzle = puzzlesAndSolutions[0][0].split("");
+      badPuzzle[Math.floor(Math.random() * 81)] = "$";
+      badPuzzle = badPuzzle.join("");
+      assert.deepEqual(
+        solver.validate(badPuzzle),
+        { error: "Invalid characters in puzzle" },
+        "Should return error for puzzle string with invalid characters"
+      );
     });
 
     test("Logic handles a puzzle string that is not 81 characters in length", () => {
