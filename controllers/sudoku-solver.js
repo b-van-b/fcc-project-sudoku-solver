@@ -89,7 +89,19 @@ class SudokuSolver {
   }
 
   ariadnesThread(grid) {
-    return grid;
+    let recursions = 0;
+    const MAX_RECURSIONS = 50000;
+  }
+
+  getEmptyCell(grid) {
+    // return the first 0-value cell
+    for (let row = 0; row < 9; row++) {
+      for (let col = 0; col < 9; col++) {
+        if (grid[row][col] == 0) return [row, col];
+      }
+    }
+    // if none, return [-1,-1]
+    return [-1, -1];
   }
 
   loadString(puzzleString) {
