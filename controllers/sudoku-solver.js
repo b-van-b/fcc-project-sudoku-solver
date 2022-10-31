@@ -26,10 +26,16 @@ class SudokuSolver {
     const grid = this.loadString(puzzleString);
     // don't check target cell (allow a value to be placed on itself)
     grid[foundRow][foundColumn] = 0;
-    if (grid[foundRow].indexOf(value) > -1) {
-      return { valid: false, conflict: "row" };
+    // check for conflicts
+    if (this.rowIsOk(grid, foundRow, value)) {
+      return { valid: true };
     }
-    return { valid: true };
+    return { valid: false, conflict: "row" };
+  }
+
+  rowIsOk(grid, row, value) {
+    // if same value not in row, it's okay
+    return grid[row].indexOf(value) == -1;
   }
 
   checkColPlacement(puzzleString, row, column, value) {
