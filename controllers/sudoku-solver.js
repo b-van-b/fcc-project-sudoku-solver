@@ -102,6 +102,14 @@ class SudokuSolver {
     return true;
   }
 
+  allAreOk(grid, row, col, value) {
+    return (
+      this.rowIsOk(grid, row, value) &&
+      this.colIsOk(grid, col, value) &&
+      this.regionIsOk(grid, row, col, value)
+    );
+  }
+
   solve(puzzleString) {
     // load grid and return if error
     const grid = this.loadString(puzzleString);
