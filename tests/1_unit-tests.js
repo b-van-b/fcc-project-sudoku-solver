@@ -64,11 +64,21 @@ suite("Unit Tests", () => {
       assert.deepEqual(result, { valid: true });
     });
 
-    test("Logic handles an invalid row placement", () => {});
+    test("Logic handles an invalid row placement", () => {
+      const result = solver.checkRowPlacement(
+        testPuzzle.string,
+        testPuzzle.row,
+        testPuzzle.col,
+        testPuzzle.badValue
+      );
+      assert.deepEqual(result, { valid: false, conflict: "row" });
+    });
   });
 
   suite("#checkColPlacement(puzzleString, row, column, value)", () => {
-    test("Logic handles a valid column placement", () => {});
+    test("Logic handles a valid column placement", () => {
+      
+    });
 
     test("Logic handles an invalid column placement", () => {});
   });
