@@ -98,6 +98,19 @@ class SudokuSolver {
     return grid;
   }
 
+  writeString(grid) {
+    let result = "";
+    // add to result row by row, converting '0' to '.'
+    for (let row = 0; row < 9; row++) {
+      result += grid[row]
+        .map((cell) => {
+          return cell == 0 ? "." : String(cell);
+        })
+        .join("");
+    }
+    return result;
+  }
+
   getCoords(rowString, column) {
     // get user-input coordinates, validate and return internal coords
     const err = { error: "Invalid coordinate" };
