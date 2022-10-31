@@ -30,7 +30,23 @@ class SudokuSolver {
     return { valid: true };
   }
 
-  checkColPlacement(puzzleString, row, column, value) {}
+  checkColPlacement(puzzleString, row, column, value) {
+    // reject value out of range (1-9)
+    if (value < 1 || value > 9) return { error: "Invalid value" };
+    // get coords and return if error
+    const coords = this.getCoords(row, column);
+    if (coords.error) return coords;
+    const [foundRow, foundColumn] = coords;
+    // get grid and return if error
+    const grid = this.loadString(puzzleString);
+    for (let r = 0; r < 9; r++) {
+      if (grid[r][foundColumn] == value) {
+        return { valid: false, conflict: "column" };
+      }
+    }
+    // return true if no conflicts found
+    return { valid: true };
+  }
 
   checkRegionPlacement(puzzleString, row, column, value) {}
 
