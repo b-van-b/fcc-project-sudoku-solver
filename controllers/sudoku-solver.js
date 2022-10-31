@@ -76,7 +76,21 @@ class SudokuSolver {
     return { valid: true };
   }
 
-  solve(puzzleString) {}
+  solve(puzzleString) {
+    // load grid and return if error
+    const grid = this.loadString(puzzleString);
+    if (grid.error) return grid;
+    // else, run Ariadne's Thread
+    const result = this.ariadnesThread(grid);
+    // catch and return error
+    if (result.error) return result;
+    // else, return result converted to string
+    return { success: this.writeString(result) };
+  }
+
+  ariadnesThread(grid) {
+    return grid;
+  }
 
   loadString(puzzleString) {
     // return error on invalid puzzleString
