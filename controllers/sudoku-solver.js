@@ -1,4 +1,6 @@
 const rowLetters = "ABCDEFGHI";
+const MAX_RECURSIONS = 50000;
+let recursions = 0;
 
 class SudokuSolver {
   validate(puzzleString) {
@@ -115,16 +117,34 @@ class SudokuSolver {
     const grid = this.loadString(puzzleString);
     if (grid.error) return grid;
     // else, run Ariadne's Thread
+    recursions = 0;
     const result = this.ariadnesThread(grid);
     // catch and return error
-    if (result.error) return result;
+    if (!result) return { error: "Unsolvable puzzle" };
     // else, return result converted to string
     return { success: this.writeString(result) };
   }
 
   ariadnesThread(grid) {
-    let recursions = 0;
-    const MAX_RECURSIONS = 50000;
+    // don't recurse too much
+    recursions++;
+    if (recursions >= MAX_RECURSIONS) return false;
+    // find the first empty cell in the grid
+    const [row, col] = this.getEmptyCell(grid);
+    // if grid is filled, it is solved
+    if (row == -1) return grid;
+    // otherwise, try any values that fit here
+    for (let val = 1; val <= 9; val++) {
+      // check if the value has no conflicts before recursing
+      if (this.allAreOk(grid, row, col, val)) {
+        grid[row][col] = val;
+        // if not false, pass to the top -- the grid is solved
+        if (this.ariadnesThread(grid)) return grid;
+      }
+    }
+    // if no values work, set the cell back to 0 and quit
+    grid[row][col] = 0;
+    return false;
   }
 
   getEmptyCell(grid) {
