@@ -16,6 +16,13 @@ const testPuzzle = {
 suite("Unit Tests", () => {
   suite("#validate(puzzleString)", () => {
     test("Logic handles a valid puzzle string of 81 characters", () => {
+      puzzlesAndSolutions.forEach(([puzzle, solution]) => {
+        assert.deepEqual(
+          solver.validate(puzzle),
+          { success: "Puzzle string is valid" },
+          "Should return success for a valid puzzle string"
+        );
+      });
     });
 
     test("Logic handles a puzzle string with invalid characters (not 1-9 or .)", () => {
