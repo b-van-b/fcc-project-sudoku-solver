@@ -98,9 +98,25 @@ suite("Unit Tests", () => {
   });
 
   suite("#checkRegionPlacement(puzzleString, row, column, value)", () => {
-    test("Logic handles a valid region (3x3 grid) placement", () => {});
+    test("Logic handles a valid region (3x3 grid) placement", () => {
+      const result = solver.checkRegionPlacement(
+        testPuzzle.string,
+        testPuzzle.row,
+        testPuzzle.col,
+        testPuzzle.goodValue
+      );
+      assert.deepEqual(result, { valid: true });
+    });
 
-    test("Logic handles an invalid region (3x3 grid) placement", () => {});
+    test("Logic handles an invalid region (3x3 grid) placement", () => {
+      const result = solver.checkRegionPlacement(
+        testPuzzle.string,
+        testPuzzle.row,
+        testPuzzle.col,
+        testPuzzle.badValue
+      );
+      assert.deepEqual(result, { valid: false, conflict: "region" });
+    });
   });
 
   suite("#solve(puzzleString)", () => {
