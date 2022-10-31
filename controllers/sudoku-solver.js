@@ -1,7 +1,6 @@
 const rowLetters = "ABCDEFGHI";
 
 class SudokuSolver {
-
   validate(puzzleString) {
     // returns an object
     // check for string length
@@ -16,7 +15,20 @@ class SudokuSolver {
     return { success: "Puzzle string is valid" };
   }
 
-  checkRowPlacement(puzzleString, row, column, value) {}
+  checkRowPlacement(puzzleString, row, column, value) {
+    // reject value out of range (1-9)
+    if (value < 1 || value > 9) return { error: "Invalid value" };
+    // get coords and return if error
+    const coords = this.getCoords(row, column);
+    if (coords.error) return coords;
+    const [foundRow, foundColumn] = coords;
+    // get grid and return if error
+    const grid = this.loadString(puzzleString);
+    if (grid[foundRow].indexOf(value) > -1) {
+      return { valid: false, conflict: "row" };
+    }
+    return { valid: true };
+  }
 
   checkColPlacement(puzzleString, row, column, value) {}
 
