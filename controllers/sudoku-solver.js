@@ -24,6 +24,8 @@ class SudokuSolver {
     const [foundRow, foundColumn] = coords;
     // get grid and return if error
     const grid = this.loadString(puzzleString);
+    // don't check target cell (allow a value to be placed on itself)
+    grid[foundRow][foundColumn] = 0;
     if (grid[foundRow].indexOf(value) > -1) {
       return { valid: false, conflict: "row" };
     }
@@ -39,6 +41,8 @@ class SudokuSolver {
     const [foundRow, foundColumn] = coords;
     // get grid and return if error
     const grid = this.loadString(puzzleString);
+    // don't check target cell (allow a value to be placed on itself)
+    grid[foundRow][foundColumn] = 0;
     for (let r = 0; r < 9; r++) {
       if (grid[r][foundColumn] == value) {
         return { valid: false, conflict: "column" };
@@ -59,6 +63,8 @@ class SudokuSolver {
     const startC = Math.floor(foundColumn / 3) * 3;
     // get grid and return if error
     const grid = this.loadString(puzzleString);
+    // don't check target cell (allow a value to be placed on itself)
+    grid[foundRow][foundColumn] = 0;
     for (let r = startR; r < startR + 3; r++) {
       for (let c = startC; c < startC + 3; c++) {
         if (grid[r][c] == value) {
