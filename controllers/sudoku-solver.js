@@ -74,21 +74,32 @@ class SudokuSolver {
     const coords = this.getCoords(row, column);
     if (coords.error) return coords;
     const [foundRow, foundColumn] = coords;
-    const startR = Math.floor(foundRow / 3) * 3;
-    const startC = Math.floor(foundColumn / 3) * 3;
     // get grid and return if error
     const grid = this.loadString(puzzleString);
     // don't check target cell (allow a value to be placed on itself)
     grid[foundRow][foundColumn] = 0;
+    // check for conflicts
+    if (this.regionIsOk(grid, foundRow, foundColumn, value)) {
+      return { valid: true };
+    }
+    return { valid: false, conflict: "region" };
+  }
+
+  regionIsOk(grid, row, col, value) {
+    // find top left corner of region
+    const startR = Math.floor(row / 3) * 3;
+    const startC = Math.floor(col / 3) * 3;
+    // look for same value in region
     for (let r = startR; r < startR + 3; r++) {
       for (let c = startC; c < startC + 3; c++) {
         if (grid[r][c] == value) {
-          return { valid: false, conflict: "region" };
+          // if found, it's not okay
+          return false;
         }
       }
     }
-    // return true if no conflicts found
-    return { valid: true };
+    // otherwise, it's okay
+    return true;
   }
 
   solve(puzzleString) {
