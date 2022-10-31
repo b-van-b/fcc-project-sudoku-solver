@@ -17,7 +17,8 @@ class SudokuSolver {
     return { success: "Puzzle string is valid" };
   }
 
-  checkRowPlacement(puzzleString, row, column, value) {
+  processUserInput(puzzleString, row, column, value) {
+    // check user input for errors and return useful data if possible
     // reject value out of range (1-9)
     if (value < 1 || value > 9) return { error: "Invalid value" };
     // get coords and return if error
@@ -28,8 +29,22 @@ class SudokuSolver {
     const grid = this.loadString(puzzleString);
     // don't check target cell (allow a value to be placed on itself)
     grid[foundRow][foundColumn] = 0;
+    // return data as object
+    return {
+      grid: grid,
+      row: foundRow,
+      col: foundColumn,
+      val: value,
+    };
+  }
+
+  checkRowPlacement(puzzleString, row, column, value) {
+    // process user input
+    const input = this.processUserInput(puzzleString, row, column, value);
+    // check for errors
+    if (input.error) return input;
     // check for conflicts
-    if (this.rowIsOk(grid, foundRow, value)) {
+    if (this.rowIsOk(input.grid, input.row, input.val)) {
       return { valid: true };
     }
     return { valid: false, conflict: "row" };
@@ -41,18 +56,12 @@ class SudokuSolver {
   }
 
   checkColPlacement(puzzleString, row, column, value) {
-    // reject value out of range (1-9)
-    if (value < 1 || value > 9) return { error: "Invalid value" };
-    // get coords and return if error
-    const coords = this.getCoords(row, column);
-    if (coords.error) return coords;
-    const [foundRow, foundColumn] = coords;
-    // get grid and return if error
-    const grid = this.loadString(puzzleString);
-    // don't check target cell (allow a value to be placed on itself)
-    grid[foundRow][foundColumn] = 0;
+    // process user input
+    const input = this.processUserInput(puzzleString, row, column, value);
+    // check for errors
+    if (input.error) return input;
     // check for conflicts
-    if (this.colIsOk(grid, foundColumn, value)) {
+    if (this.colIsOk(input.grid, input.col, input.val)) {
       return { valid: true };
     }
     return { valid: false, conflict: "column" };
@@ -70,18 +79,12 @@ class SudokuSolver {
   }
 
   checkRegionPlacement(puzzleString, row, column, value) {
-    // reject value out of range (1-9)
-    if (value < 1 || value > 9) return { error: "Invalid value" };
-    // get coords and return if error
-    const coords = this.getCoords(row, column);
-    if (coords.error) return coords;
-    const [foundRow, foundColumn] = coords;
-    // get grid and return if error
-    const grid = this.loadString(puzzleString);
-    // don't check target cell (allow a value to be placed on itself)
-    grid[foundRow][foundColumn] = 0;
+    // process user input
+    const input = this.processUserInput(puzzleString, row, column, value);
+    // check for errors
+    if (input.error) return input;
     // check for conflicts
-    if (this.regionIsOk(grid, foundRow, foundColumn, value)) {
+    if (this.regionIsOk(input.grid, input.row, input.col, input.val)) {
       return { valid: true };
     }
     return { valid: false, conflict: "region" };
