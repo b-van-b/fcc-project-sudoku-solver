@@ -49,13 +49,22 @@ class SudokuSolver {
     const grid = this.loadString(puzzleString);
     // don't check target cell (allow a value to be placed on itself)
     grid[foundRow][foundColumn] = 0;
+    // check for conflicts
+    if (this.colIsOk(grid, foundColumn, value)) {
+      return { valid: true };
+    }
+    return { valid: false, conflict: "column" };
+  }
+
+  colIsOk(grid, col, value) {
+    // if same value in row, it's not okay
     for (let r = 0; r < 9; r++) {
-      if (grid[r][foundColumn] == value) {
-        return { valid: false, conflict: "column" };
+      if (grid[r][col] == value) {
+        return false;
       }
     }
-    // return true if no conflicts found
-    return { valid: true };
+    // otherwise, it's okay
+    return true;
   }
 
   checkRegionPlacement(puzzleString, row, column, value) {
