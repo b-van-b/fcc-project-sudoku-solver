@@ -162,9 +162,9 @@ class SudokuSolver {
     recursions = 0;
     const result = this.ariadnesThread(grid);
     // catch and return error
-    if (!result) return { error: "Unsolvable puzzle" };
+    if (!result) return { error: "Puzzle cannot be solved" };
     // else, return result converted to string
-    return { success: this.writeString(result) };
+    return { solution: this.writeString(result) };
   }
 
   ariadnesThread(grid) {
