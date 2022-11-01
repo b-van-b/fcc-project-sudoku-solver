@@ -5,6 +5,10 @@ let recursions = 0;
 class SudokuSolver {
   validate(puzzleString) {
     // returns an object
+    // check if puzzle is missing
+    if (!puzzleString) {
+      return { error: "Required field missing" };
+    }
     // check for string length
     if (puzzleString.length != 81) {
       return { error: "Expected puzzle to be 81 characters long" };
@@ -18,6 +22,9 @@ class SudokuSolver {
   }
 
   processUserInput(puzzleString, row, column, value) {
+    // validate puzzleString first
+    const validation = this.validate(puzzleString);
+    if (validation.error) return validation;
     // check user input for errors and return useful data if possible
     // reject value out of range (1-9)
     if (value < 1 || value > 9) return { error: "Invalid value" };
@@ -30,11 +37,12 @@ class SudokuSolver {
     // don't check target cell (allow a value to be placed on itself)
     grid[foundRow][foundColumn] = 0;
     // return data as object
+    // convert value from string to integer
     return {
       grid: grid,
       row: foundRow,
       col: foundColumn,
-      val: value,
+      val: +value,
     };
   }
 
