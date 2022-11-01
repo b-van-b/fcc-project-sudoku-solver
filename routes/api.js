@@ -22,5 +22,9 @@ module.exports = function (app) {
     res.json(result);
   });
 
-  app.route("/api/solve").post((req, res) => {});
+  app.route("/api/solve").post((req, res) => {
+    const result = solver.solve(req.body.puzzle);
+    console.log("Result: " + JSON.stringify(result));
+    res.json(result);
+  });
 };
