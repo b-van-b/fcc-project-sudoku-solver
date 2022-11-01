@@ -147,17 +147,43 @@ class SudokuSolver {
   }
 
   allAreOk(grid, row, col, value) {
-    return (
+    // value of 0 is non-conflicting
+    if (value == 0) return true;
+    // temporarily blank cell value
+    const originalValue = grid[row][col];
+    grid[row][col] = 0;
+    const result =
       this.rowIsOk(grid, row, value) &&
       this.colIsOk(grid, col, value) &&
-      this.regionIsOk(grid, row, col, value)
-    );
+      this.regionIsOk(grid, row, col, value);
+    // restore cell value
+    grid[row][col] = originalValue;
+    // return result
+    return result;
+  }
+
+  hasConflicts(grid) {
+    // notify if grid contains any conflicts
+    for (let row = 0; row < 9; row++) {
+      for (let col = 0; col < 9; col++) {
+        if (!this.allAreOk(grid, row, col, grid[row][col])) {
+          console.log("Conflict detected at " + rowLetters.charAt(row) + col);
+          return true;
+        }
+      }
+    }
+    // return false if no conflicts detected
+    return false;
   }
 
   solve(puzzleString) {
     // load grid and return if error
     const grid = this.loadString(puzzleString);
     if (grid.error) return grid;
+    // check for conflicts in the initial grid
+    if (this.hasConflicts(grid)) {
+      return { error: "Puzzle cannot be solved" };
+    }
     // else, run Ariadne's Thread
     recursions = 0;
     const result = this.ariadnesThread(grid);
