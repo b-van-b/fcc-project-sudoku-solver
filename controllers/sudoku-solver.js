@@ -46,6 +46,37 @@ class SudokuSolver {
     };
   }
 
+  checkPlacement(puzzleString, row, column, value) {
+    // process user input
+    const input = this.processUserInput(puzzleString, row, column, value);
+    // handle errors
+    if (input.error) return input;
+    // get results by checking row, column, and region
+    const result = { valid: true };
+    const conflict = [];
+    // row
+    if (!this.rowIsOk(input.grid, input.row, input.val)) {
+      result.valid = false;
+      conflict.push("row");
+    }
+    // col
+    if (!this.colIsOk(input.grid, input.col, input.val)) {
+      result.valid = false;
+      conflict.push("column");
+    }
+    // region
+    if (!this.regionIsOk(input.grid, input.row, input.col, input.val)) {
+      result.valid = false;
+      conflict.push("region");
+    }
+    // add conflict list if not valid
+    if (!result.valid) {
+      result.conflict = conflict;
+    }
+    // all done
+    return result;
+  }
+
   checkRowPlacement(puzzleString, row, column, value) {
     // process user input
     const input = this.processUserInput(puzzleString, row, column, value);
