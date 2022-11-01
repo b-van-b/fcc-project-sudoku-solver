@@ -124,7 +124,7 @@ suite("Unit Tests", () => {
       puzzlesAndSolutions.forEach(([puzzle, solution]) => {
         assert.property(
           solver.solve(puzzle),
-          "success",
+          "solution",
           "Should return success for a valid puzzle string"
         );
       });
@@ -160,7 +160,7 @@ suite("Unit Tests", () => {
       puzzlesAndSolutions.forEach(([puzzle, solution]) => {
         assert.deepEqual(
           solver.solve(puzzle),
-          { success: solution },
+          { solution: solution },
           "Should return proper solution for a valid puzzle string"
         );
       });
